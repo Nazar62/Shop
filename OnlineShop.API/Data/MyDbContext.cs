@@ -14,6 +14,6 @@ namespace OnlineShop.API.Data
         public DbSet<FeedBack> FeedBacks { get; set; }  
         public DbSet<Product> Products { get; set; }  
         public DbSet<Seller> Sellers { get; set; }  
-        public DbSet<ShippedProduct> ShippedProducts { get; set; }  
+        public DbSet<SoldProduct> SoldProducts { get; set; }  
     }
 }

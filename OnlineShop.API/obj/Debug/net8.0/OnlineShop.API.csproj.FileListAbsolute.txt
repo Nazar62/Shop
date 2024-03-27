@@ -134,3 +134,4 @@ D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\refint\OnlineShop.
 D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\OnlineShop.API.pdb
 D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\OnlineShop.API.genruntimeconfig.cache
 D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\ref\OnlineShop.API.dll
+D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\OnlineShop.API.sourcelink.json
