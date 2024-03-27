@@ -7,7 +7,9 @@ namespace OnlineShop.API.Models
         public int Id { get; set; }
         public byte[] Photo { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public Guid Key { get; set; }
+        public Guid? VerificationToken { get; set; }
+        public DateTime? TokenExpires { get; set; }
     }
 }
