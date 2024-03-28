@@ -58,12 +58,21 @@ namespace OnlineShop.API.Repo.Repos
             {
                 Id = 0,
                 Name = buyerDTO.Name,
-                Password = buyerDTO.Password,
+                Password = HashPassword(buyerDTO.Password),
                 Email = buyerDTO.Email,
                 BuyerGuid = Guid.NewGuid()
             };
-            _context.Buyers.Add(buyer); //TODO: Add hashing pass
+            _context.Buyers.Add(buyer);
             return Save();
+        }
+
+        public string HashPassword(string pass)
+        {
+            var sha = SHA256.Create();
+            var passBytes = Encoding.UTF8.GetBytes(pass);
+
+            var hashedPass = sha.ComputeHash(passBytes);
+            return Convert.ToBase64String(hashedPass);
         }
 
         public ICollection<SoldProduct> GetShippedProducts(Guid buyerGuid)
@@ -129,6 +138,17 @@ namespace OnlineShop.API.Repo.Repos
         public Buyer GetBuyer(Guid buyerGuid)
         {
             return _context.Buyers.Where(x => x.BuyerGuid == buyerGuid).FirstOrDefault();
+        }
+
+        public bool UserExistsEmail(string email)
+        {
+            return _context.Buyers.Any(x => x.Email == email);
+        }
+
+        public bool UpdateBuyer(Buyer buyer)
+        {
+            _context.Buyers.Update(buyer);
+            return Save();
         }
     }
 }
