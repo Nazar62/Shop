@@ -38,7 +38,7 @@ namespace OnlineShop.API.Controllers
             if(!_buyerRepo.CreateBuyer(buyerDto))
             {
                 ModelState.AddModelError("value", "Something went wrong creating");
-                return BadRequest(ModelState);
+                return StatusCode(500, ModelState);
             }
             var buyer = _buyerRepo.GetBuyer(buyerDto.Name);
             Verify(buyer.Name);
@@ -124,7 +124,7 @@ namespace OnlineShop.API.Controllers
             if(!_buyerRepo.UpdateBuyer(user))
             {
                 ModelState.AddModelError("value", "Something went wrong updating");
-                return BadRequest(ModelState);
+                return StatusCode(500, ModelState);
             }
 
             return Ok(Json("Updated successfully"));
@@ -154,7 +154,7 @@ namespace OnlineShop.API.Controllers
                 return Ok();
             } catch
             {
-                return BadRequest(Json("Something went wrong deleting"));
+                return StatusCode(500, Json("Something went wrong deleting"));
             }
         }
 
@@ -194,7 +194,7 @@ namespace OnlineShop.API.Controllers
             if(!_buyerRepo.CreateVerificationToken(user.Name))
             {
                 ModelState.AddModelError("value", "Something went wrong updating");
-                return BadRequest(ModelState);
+                return StatusCode(500, ModelState);
             }
             var baseUrl = $"https://{Request.Host.Value}/api/Buyer/reset-password-verify/{user.VerificationToken}";
             _emailRepo.SendMail($"<h1>Reset password Notes</h1> <div>{baseUrl}</div>", user.Email, "Confirm reset password");
@@ -250,7 +250,7 @@ namespace OnlineShop.API.Controllers
             if (!_buyerRepo.UpdateBuyer(user))
             {
                 ModelState.AddModelError("value", "Something went wrong updating");
-                return BadRequest(ModelState);
+                return StatusCode(500, ModelState);
             }
             return Ok(Json("Password successfully reset"));
         }
@@ -340,9 +340,63 @@ namespace OnlineShop.API.Controllers
 
         [HttpPost]
         [Route("buy-product")]
-        public IActionResult BuyProduct()
+        public IActionResult BuyProduct(BuyProductRequest request)
         {
+            if(request == null)
+                return BadRequest();
 
+            if(!_buyerRepo.UserExists(request.BuyerGuid))
+                return BadRequest(Json("Incorrect Guid"));
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_buyerRepo.ProductExists(request.ProductId))
+                return BadRequest(Json("Incorrect product id"));
+
+            var product = _buyerRepo.GetProduct(request.ProductId);
+
+            if(!_buyerRepo.BuyProduct(request.BuyerGuid, product, request.Count))
+                return StatusCode(500, Json("Something went wrong buying"));
+
+            return Ok(Json("Product Bought"));
+        }
+
+        [HttpPost]
+        [Route("cancel-buy")]
+        public IActionResult CancelBuying(CancelBuyRequest request)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(request == null)
+                return BadRequest();
+
+            if(!_buyerRepo.UserExists(request.BuyerId))
+                return BadRequest(Json("User not exists"));
+
+            var user = _buyerRepo.GetBuyer(request.BuyerId);
+
+            if(user.BuyerGuid != request.BuyerGuid)
+                return BadRequest(Json("Buyer Guid incorrect"));
+
+            if (!_buyerRepo.SoldProductExists(request.SoldId))
+                return BadRequest(Json("Sold not exists"));
+
+            var sold = _buyerRepo.GetSoldProduct(request.SoldId);
+
+            if (sold.BuyerID != request.BuyerId)
+                return BadRequest(Json("Incorrect buyer id"));
+
+            if (sold.IsShipped == true)
+                return BadRequest(Json("Product shipped"));
+
+            if(!_buyerRepo.CancelBuying(sold.Id))
+            {
+                ModelState.AddModelError("value", "Something went wrong canceling");
+                return StatusCode(500, ModelState);
+            }
+            return Ok(Json("Buy canceled"));
         }
     }
 }

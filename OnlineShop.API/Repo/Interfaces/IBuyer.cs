@@ -11,6 +11,7 @@ namespace OnlineShop.API.Repo.Interfaces
         bool LogIn(BuyerDTO buyerDTO);
         bool UserExists(string login);
         bool UserExists(Guid buyerGuid);
+        bool UserExists(int id);
         bool UserExistsEmail(string email);
         ICollection<SoldProduct> GetShippedProducts(Guid buyerGuid);
         bool BuyProduct(Guid buyerGuid, Product product, int count);
@@ -24,5 +25,9 @@ namespace OnlineShop.API.Repo.Interfaces
         Buyer GetBuyer(Guid buyerGuid);
         Buyer GetBuyerByVerifyToken(Guid buyerToken);
         bool DeleteUser(Buyer buyer);
+        bool ProductExists(int id);
+        Product GetProduct(int id);
+        SoldProduct GetSoldProduct(int productId);
+        bool SoldProductExists(int productId);
     }
 }

@@ -3,6 +3,7 @@ using OnlineShop.API.Models;
 using OnlineShop.API.Models.DTO;
 using OnlineShop.API.Repo.Interfaces;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
 using System.Text;
 
 namespace OnlineShop.API.Repo.Repos
@@ -30,6 +31,15 @@ namespace OnlineShop.API.Repo.Repos
             };
             _context.SoldProducts.Add(item);
             return Save();
+        }
+
+        public bool ProductExists(int id)
+        {
+            return _context.Products.Any(x => x.Id == id);
+        }
+        public Product GetProduct(int id)
+        {
+            return _context.Products.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public bool CancelBuying(int id)
@@ -109,6 +119,10 @@ namespace OnlineShop.API.Repo.Repos
         {
             return _context.Buyers.Any(x => x.BuyerGuid == buyerGuid);
         }
+        public bool UserExists(int id)
+        {
+            return _context.Buyers.Any(x => x.Id == id);
+        }
         public bool Save()
         {
             try
@@ -184,6 +198,16 @@ namespace OnlineShop.API.Repo.Repos
         {
             _context.Buyers.Remove(buyer);
             return Save();
+        }
+
+        public SoldProduct GetSoldProduct(int productId)
+        {
+            return _context.SoldProducts.Where(x => x.Id == productId).FirstOrDefault();
+        }
+
+        public bool SoldProductExists(int productId)
+        {
+            return _context.SoldProducts.Any(x => x.Id == productId);
         }
     }
 }
