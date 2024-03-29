@@ -93,9 +93,9 @@ namespace OnlineShop.API.Repo.Repos
             }
         }
 
-        public bool UpdateAddress(BuyerDTO buyerDTO, string address)
+        public bool UpdateAddress(Guid buyerGuid, string address)
         {
-            var buyer = _context.Buyers.Where(x => x.Name == buyerDTO.Name).FirstOrDefault();
+            var buyer = _context.Buyers.Where(x => x.BuyerGuid == buyerGuid).FirstOrDefault();
             buyer.Address = address;
             _context.Buyers.Update(buyer);
             return Save();
@@ -127,6 +127,25 @@ namespace OnlineShop.API.Repo.Repos
             var buyer = _context.Buyers.Where(x => x.Name == login).FirstOrDefault();
             buyer.VerificationToken = Guid.NewGuid();
             buyer.TokenExpires = DateTime.Now.AddDays(1);
+            buyer.TokenVerified = false;
+            _context.Buyers.Update(buyer);
+            return Save();
+        }
+
+        public bool VerifyToken(string login)
+        {
+            var buyer = _context.Buyers.Where(x => x.Name == login).FirstOrDefault();
+            buyer.TokenExpires = DateTime.Now;
+            buyer.TokenVerified = true;
+            _context.Buyers.Update(buyer);
+            return Save();
+        }
+
+        public bool CloseVerificationToken(string login)
+        {
+            var buyer = _context.Buyers.Where(x => x.Name == login).FirstOrDefault();
+            buyer.TokenExpires = DateTime.Now;
+            buyer.TokenVerified = false;
             _context.Buyers.Update(buyer);
             return Save();
         }
@@ -140,6 +159,11 @@ namespace OnlineShop.API.Repo.Repos
             return _context.Buyers.Where(x => x.BuyerGuid == buyerGuid).FirstOrDefault();
         }
 
+        public Buyer GetBuyer(int id)
+        {
+            return _context.Buyers.Where(x => x.Id == id).FirstOrDefault();
+        }
+
         public bool UserExistsEmail(string email)
         {
             return _context.Buyers.Any(x => x.Email == email);
@@ -148,6 +172,17 @@ namespace OnlineShop.API.Repo.Repos
         public bool UpdateBuyer(Buyer buyer)
         {
             _context.Buyers.Update(buyer);
+            return Save();
+        }
+
+        public Buyer GetBuyerByVerifyToken(Guid buyerToken)
+        {
+            return _context.Buyers.Where(x => x.VerificationToken == buyerToken).FirstOrDefault();
+        }
+
+        public bool DeleteUser(Buyer buyer)
+        {
+            _context.Buyers.Remove(buyer);
             return Save();
         }
     }

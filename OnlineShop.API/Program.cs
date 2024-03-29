@@ -13,6 +13,7 @@ builder.Services.AddScoped<IBuyer, BuyerRepo>();
 builder.Services.AddScoped<IFeedback, FeedbackRepo>();
 builder.Services.AddScoped<IProduct, ProductRepo>();
 builder.Services.AddScoped <ISeller, SellerRepo>();
+builder.Services.AddScoped <IEmail, EmailRepo>();
 builder.Services.AddDbContext<MyDbContext>( options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

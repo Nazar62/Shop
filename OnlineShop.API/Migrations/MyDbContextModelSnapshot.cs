@@ -31,7 +31,6 @@ namespace OnlineShop.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("BuyerGuid")
@@ -48,6 +47,15 @@ namespace OnlineShop.API.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("VerificationToken")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -116,6 +124,9 @@ namespace OnlineShop.API.Migrations
                     b.Property<Guid>("SellerKey")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Sold")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");
@@ -130,7 +141,6 @@ namespace OnlineShop.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("Key")
@@ -144,21 +154,24 @@ namespace OnlineShop.API.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<DateTime?>("TokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("VerificationToken")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.ToTable("Sellers");
                 });
 
-            modelBuilder.Entity("OnlineShop.API.Models.ShippedProduct", b =>
+            modelBuilder.Entity("OnlineShop.API.Models.SoldProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("AverageRating")
-                        .HasColumnType("float");
 
                     b.Property<int>("BuyerID")
                         .HasColumnType("int");
@@ -170,7 +183,14 @@ namespace OnlineShop.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsShipped")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -185,7 +205,7 @@ namespace OnlineShop.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippedProducts");
+                    b.ToTable("SoldProducts");
                 });
 #pragma warning restore 612, 618
         }

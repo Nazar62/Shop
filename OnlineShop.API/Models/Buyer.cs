@@ -10,6 +10,7 @@ namespace OnlineShop.API.Models
         public string Email { get; set; }
         public string? Address { get; set; }
         public bool Verified { get; set; } = false;
+        public bool TokenVerified { get; set; } = false;
         public Guid BuyerGuid { get; set; }
         public Guid? VerificationToken { get; set; }
         public DateTime? TokenExpires { get; set; }

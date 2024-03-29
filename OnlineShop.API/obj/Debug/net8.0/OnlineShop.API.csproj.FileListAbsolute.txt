@@ -135,3 +135,6 @@ D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\OnlineShop.API.pdb
 D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\OnlineShop.API.genruntimeconfig.cache
 D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\ref\OnlineShop.API.dll
 D:\vs\projects\OnlineShop.API\OnlineShop.API\obj\Debug\net8.0\OnlineShop.API.sourcelink.json
+D:\vs\projects\OnlineShop.API\OnlineShop.API\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+D:\vs\projects\OnlineShop.API\OnlineShop.API\bin\Debug\net8.0\MailKit.dll
+D:\vs\projects\OnlineShop.API\OnlineShop.API\bin\Debug\net8.0\MimeKit.dll

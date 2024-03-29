@@ -15,10 +15,14 @@ namespace OnlineShop.API.Repo.Interfaces
         ICollection<SoldProduct> GetShippedProducts(Guid buyerGuid);
         bool BuyProduct(Guid buyerGuid, Product product, int count);
         bool CancelBuying(int id);
-        bool UpdateAddress(BuyerDTO buyer, string newAddress);
         bool ChangePassword(Guid verificationToken, string password);
         bool CreateVerificationToken(string login);
+        bool CloseVerificationToken(string login);
+        bool VerifyToken(string login);
         Buyer GetBuyer(string login);
+        Buyer GetBuyer(int id);
         Buyer GetBuyer(Guid buyerGuid);
+        Buyer GetBuyerByVerifyToken(Guid buyerToken);
+        bool DeleteUser(Buyer buyer);
     }
 }
